@@ -20,7 +20,10 @@ def authenticate_calendar():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+            auth_url, _ = flow.authorization_url(prompt='consent')
+            print(f'Ve a esta URL para autenticarte: {auth_url}')
+            code = input('Introduce el código que aparece tras autenticarte: ')
+            creds = flow.fetch_token(code=code)
         
         # Guarda las credenciales en un archivo token.json
         with open('token.json', 'w') as token_file:
