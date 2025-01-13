@@ -30,3 +30,32 @@ def authenticate_calendar():
             token_file.write(creds.to_json())
     
     return creds
+def create_event(creds, title, description, location, start_time, end_time, timezone):
+    """Crea un evento en Google Calendar."""
+    try:
+        # Construye el servicio de Google Calendar
+        service = build('calendar', 'v3', credentials=creds)
+        
+        # Define los datos del evento
+        event = {
+            'summary': title,
+            'description': description,
+            'location': location,
+            'start': {
+                'dateTime': start_time,
+                'timeZone': timezone,
+            },
+            'end': {
+                'dateTime': end_time,
+                'timeZone': timezone,
+            }
+        }
+        
+        # Inserta el evento en el calendario principal
+        created_event = service.events().insert(calendarId='primary', body=event).execute()
+        
+        # Devuelve el enlace al evento creado
+        return created_event.get('htmlLink')
+    except Exception as e:
+        raise Exception(f"Error al crear el evento: {str(e)}")
+

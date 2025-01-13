@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from calendar_manager import authenticate_calendar, create_event
+from calendar_manager import authenticate_calendar, create_event  # Importa las funciones necesarias
 import os  # Importamos os para usar la variable de entorno PORT
 
 # Inicializar Flask y autenticar Google Calendar
